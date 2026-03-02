@@ -12,10 +12,10 @@ class Task(ABC):
     @description.setter
     def description(self, value):
         if not isinstance(value, str):
-            raise ValueError("description must be a string")
+            raise ValueError(f"description must be a string! RECEIVED: {value}")
         value = value.strip()
         if not value:
-            raise ValueError("description must not be empty or whitespace")
+            raise ValueError(f"description must not be empty or whitespace! RECEIVED: {value}")
         self._description = value
 
     @abstractmethod
@@ -54,20 +54,58 @@ if __name__ == '__main__':
     print("")
     print("TODO: make current indent change when tasks get added to each other and update show_details method to reflect current indent for a given task")
     print("")
-    print("these next steps should all throw and error, if it does not, its not working yet, we'll move them to an error catching block when its confirmed that they throw errors (this is a quick and dirty Red Green Test from TDD principles)")
+    print("these next steps should all throw an error and get caught properly, if it does not, its not working yet, we'll move them to an error catching block when its confirmed that they throw errors (this is a quick and dirty Red Green Test from TDD principles)")
     print("")
     print("If this script ends with 'An unknown error occurred' it means they weren't caught properly")
+    
+    # NONSTRING TASK VIOLATION
     print("")
     try:
-        empty_task1 = SimpleTask("")
-        empty_task1.show_details()
-        empty_task2 = ComplexTask(" ")
-        empty_task2.show_details()
+        print("trying...")
+        some_list = ["string", "list", "not supported"]
+        nonstring_task1 = SimpleTask(some_list)
+        
+
+    except ValueError as e:
+        print(f"A ValueError was properly caught: {e}")
+    
+    print("")
+    
+    # EMPTY TASK VIOLATION
+    print("")
+    try:
+        print("trying...")
+        
+        empty_task = SimpleTask("")
+        empty_task.show_details()
+
+    except ValueError as e:
+        print(f"A ValueError was properly caught: {e}")
+    
+    print("")
+    
+    
+    # WHITESPACE TASK VIOLATION
+    print("")
+    try:
+        print("trying...")
+        whitespace_task = ComplexTask(" ")
+        whitespace_task.show_details()
+        
+    except ValueError as e:
+        print(f"A ValueError was properly caught: {e}")
+    
+    print("")
+    
+    
+    try:
         nonalphanumeric_task1 = ComplexTask("Apostrophe's Breakage")
         nonalphanumeric_task1.show_details()
         nonalphanumeric_task2 = ComplexTask("No Punctuation!! Cuz They Might Become Slip Titles!!!")
         nonalphanumeric_task2.show_details()
+        print("if you can read this, they aren't failing properly")
+    except ValueError as e:
+        print(f"A ValueError occured: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {type(e).__name__} – {e}")
-    except:
-        print("An unknown error occurred")
+
