@@ -12,13 +12,6 @@ class Task(ABC):
     
     @description.setter
     def description(self, value):
-        # if not isinstance(value, str):
-        #     raise ValueError(f"description must be a string! RECEIVED: {value}")
-        # value = value.strip()
-        # if not value:
-        #     raise ValueError(f"description must not be empty or whitespace! RECEIVED: {value}")
-        # if re.search(r'[^a-zA-Z0-9\s]', value):
-        #     raise ValueError("String contains characters other than alphanumeric and spaces.")
         self.validate_description(value)
         self._description = value
 
