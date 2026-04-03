@@ -1,10 +1,5 @@
 import re
 
-###########################################
-# parallel development as we refactor -> 
-# BEGIN single Task class flattened implementation
-############################################
-
 class FileNameValidator():
 
     def validate_potential_name(self, value):
@@ -15,9 +10,11 @@ class FileNameValidator():
 class Task():
     def __init__(self, description):
         self.description = description
+        self.indent_factor = 0
         self.child_tasks = []
 
     def add_task(self, task): 
+        task.indent_factor = self.indent_factor + 1
         self.child_tasks.append(task)
 
     @property
@@ -37,42 +34,19 @@ class Task():
             raise ValueError(f"description must not be empty or whitespace! RECEIVED: {value}")
 
     def show_details(self):
-        print(f"- [ ] {self.description}")
+        tab_prefix = "\t" * self.indent_factor 
+        print(f"{tab_prefix}- [ ] {self.description}")
         for child_task in self.child_tasks:
             child_task.show_details()
-
-
-###########################################
-# parallel development as we refactor -> 
-# END single Task class flattened implementation
-############################################
-
 
 
 # Usage
 if __name__ == '__main__':
 
-###########################################
-# parallel development as we refactor -> 
-# BEGIN single Task class flattened implementation
-############################################
-
     task1 = Task("Task 1")
     task2 = Task("Task 2")
     task2.add_task(task1)
     task2.show_details()
-
-
-
-###########################################
-# parallel development as we refactor -> 
-# END single Task class flattened implementation
-############################################
-
-
-###########################################
-# resume this once we've switched dev paradigms
-############################################
 
     print("")
     print("TODO: make current indent change when tasks get added to each other and update show_details method to reflect current indent for a given task")
